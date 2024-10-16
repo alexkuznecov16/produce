@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Template made by Alexander Kuznecov.">
+  <meta name="author" content="Alexander (C)">
+  <meta property="og:title" content="Template">
+  <meta property="og:description" content="Template made by Alexander Kuznecov.">
+  <meta property="og:url" content="https://www.github.com/alexkuznecov16">
+  <link rel="stylesheet" href="./styles/main.css">
+  <title>Template</title>
+</head>
+
+<body>
+  <main class="main">
+    <div class="container">
+      <h1 class="title">Template</h1>
+      <!-- <p class='description'>Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit temporibus minus asperiores harum, dignissimos adipisci provident vel eos rerum culpa deserunt? Dicta ipsa deleniti nobis minus molestiae ex voluptatem adipisci. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore nulla officiis, placeat eveniet possimus animi earum ipsum aliquam corrupti dolores.</p> -->
+      <div class="main__inner">
+        <div class="box">
+          <div class="option_block">
+            <label for='options'>Select operation:</label>
+            <select id="options">
+              <option value="0" selected>None</option>
+              <option value="1">Addition</option>
+              <option value="2">Subtraction</option>
+              <option value="3">Multiplication</option>
+              <option value="4">Division</option>
+            </select>
+          </div>
+          <div class="enter_block">
+            <input placeholder='Enter first number' type="number" value='0' id='data1'>
+            <input placeholder='Enter second number' type="number" value='0' id='data2'>
+          </div>
+          <textarea readonly id="resultArea" placeholder='Results will be here...'></textarea>
+          <div class="button_block">
+            <button type='button' onclick='main()'>Solve</button>
+            <button type='button' onclick='refresh()'>Refresh</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <p>Made by Alexander Kuznecov &copy; 2024</p>
+    </div>
+  </footer>
+
+  <script src="./scripts/main.js"></script>
+</body>
+
+</html>
