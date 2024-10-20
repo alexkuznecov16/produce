@@ -23,13 +23,9 @@ const main = () => {
 const checking = (val1, val2, selected) => {
 	let result = ['', true]; // valid result
 
-  // failed results
-	if (isNaN(val1) || isNaN(val2)) {
-		result = ['Please enter valid numbers.', false];
-	} else if (selected < 1 || selected > 4) {
+	// failed results
+	if (selected < 0 || selected > 4) {
 		result = ['Please choose valid operation.', false];
-	} else if (selected == 4 && val2 == 0) {
-		result = ['You cannot divide by 0.', false];
 	}
 
 	return result; // send checking result
@@ -37,18 +33,36 @@ const checking = (val1, val2, selected) => {
 
 // solving function => solve defined task
 const solving = (val1, val2, selected) => {
-	let result = 'Example...'; // initial result
+	let result = '';
 
-  // set result by selected option
-	if (selected == 1) {
-		result = `Addition of ${val1} + ${val2} = ${val1 + val2}`;
-	} else if (selected == 2) {
-		result = `Subtraction of ${val1} - ${val2} = ${val1 - val2}`;
-	} else if (selected == 3) {
-		result = `Multiplication of ${val1} * ${val2} = ${val1 * val2}`;
-	} else if (selected == 4) {
-		result = `Division of ${val1} : ${val2} = ${val1 / val2}`;
+	class Person {
+		constructor(name, surname, old, location) {
+			this.firstName = name,
+			this.secondName = surname,
+			this.age = old,
+			this.city = location
+			this.getFullName = () => {
+				return this.firstName + ' ' + this.secondName
+			}
+		}
 	}
+
+	// function Person(name, surname, old, location) {
+	// 	this.firstName = name,
+	// 	this.secondName = surname,
+	// 	this.age = old,
+	// 	this.city = location
+	// }
+
+	user_name = window.prompt('Enter your first name: ', 'John');
+	user_surname = window.prompt('Enter your second name: ', 'Doe');
+	user_age = window.prompt('Enter your age: ', '28');
+	user_location = window.prompt('Enter your location city: ', 'Riga');
+
+	const person1 = new Person(user_name, user_surname, user_age, user_location)
+
+	console.log(person1);
+	console.log(person1.getFullName()); // John Doe
 
 	return result; // send solving result
 };

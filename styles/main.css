@@ -140,6 +140,12 @@ button {
   border: 1px solid #000;
   width: clamp(80%, 30vw, 100%);
   margin: 0 auto;
+  font-size: clamp(8px, 2vw, 14px);
+  /* word wrap */
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }
 
 .footer {
