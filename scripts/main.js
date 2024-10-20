@@ -50,7 +50,7 @@ const solving = (val1, val2, selected) => {
 		result = `Division of ${val1} : ${val2} = ${val1 / val2}`;
 	}
 
-	return result; // send solving result
+	return result; // send solving result 
 };
 
 // refresh all data
