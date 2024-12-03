@@ -266,6 +266,12 @@ const solving = (selCategory, selProduct) => {
 		result += `Country: ${selectedProduct.country}\n`;
 		result += `Price: $${selectedProduct.price}\n`;
 		result += `Count: ${selectedProduct.count}`;
+
+		const btn = document.createElement('span');
+		btn.className = 'delete';
+		btn.textContent = '-';
+
+		document.querySelector('.textarea_block').appendChild(btn);
 	}
 
 	localStorage.setItem('object', JSON.stringify(produce)); // set new produce object for locale

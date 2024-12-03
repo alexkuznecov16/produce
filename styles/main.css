@@ -163,9 +163,28 @@ button {
   border-radius: 0 20px 0 0;
   padding: 20px;
   cursor: pointer;
-  transition: .3s linear;
   -webkit-transition: .3s linear;
   -moz-transition: .3s linear;
+  transition: .3s linear;
+}
+
+.box .textarea_block .delete {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  right: 0;
+  background-color: red;
+  font-size: 20px;
+  border-radius: 0 20px 0 0;
+  padding: 20px;
+  cursor: pointer;
+  -webkit-transition: .3s linear;
+  -moz-transition: .3s linear;
+  transition: .3s linear;
+}
+
+.box .textarea_block .delete:hover {
+  opacity: .7;
 }
 
 .box .textarea_block .add:hover {
