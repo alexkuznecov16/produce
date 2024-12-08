@@ -161,7 +161,7 @@ button {
   background-color: greenyellow;
   font-size: 20px;
   border-radius: 0 20px 0 0;
-  padding: 20px;
+  padding: clamp(8px, 4vw, 12px);
   cursor: pointer;
   -webkit-transition: .3s linear;
   -moz-transition: .3s linear;
@@ -277,10 +277,12 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
 .modal_container textarea {
+  max-width: 400px;
+  width: 100%;
   resize: none;
   border: 1px solid #000;
   margin: 0 auto;
@@ -323,7 +325,7 @@ button {
 
 @media screen and (width < 800px) {
   .container {
-    max-width: 400px;
+    max-width: 600px;
   }
 }
 

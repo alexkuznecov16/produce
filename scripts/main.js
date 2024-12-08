@@ -246,30 +246,40 @@ const solving = () => {
 			// clicking to the btn add product with specific values
 			btn_add.addEventListener('click', () => {
 				const file = inputFile.files[0];
-				// if values are correct
-				if ((input1.value != '' && input2.value != '' && input3.value != 'e' && input3.value != '' && input4.value != 'e' && file) || input4.value != '' || !isNaN(Number(input3.value)) || !isNaN(Number(input4.value)) || Number(input3.value) > 0 || Number(input4.value) > 0) {
-					const reader = new FileReader();
+
+				// data check
+				const isTitleValid = input1.value.trim() !== ''; // input1 is not empty
+				const isCountryValid = input2.value.trim() !== ''; // input2 is not empty
+				const isCountValid = Number(input3.value) >= 1 && !isNaN(Number(input3.value)); // input3 is not less than 1
+				const isPriceValid = Number(input4.value) >= 1 && !isNaN(Number(input4.value)); // input4 is not less than 1
+				const isFileValid = Boolean(file); // input5 (image) is correct
+
+				// if all data is correct -> add this product
+				if (isTitleValid && isCountryValid && isCountValid && isPriceValid && isFileValid) {
+					const reader = new FileReader(); // read file from user input
 					reader.onload = () => {
-						// const def = produce[Object.keys(produce)[selCategory]];
 						const len = Object.keys(produce[Object.keys(produce)[selCategory]]).length;
+
 						// temporary object with product data
 						const temp = {
 							[len]: {
-								title: input1.value,
-								country: input2.value,
-								price: input3.value,
-								count: input4.value,
+								title: input1.value.trim(),
+								country: input2.value.trim(),
+								price: Number(input4.value),
+								count: Number(input3.value),
 								image: reader.result,
 							},
 						};
-						Object.assign(produce[Object.keys(produce)[selCategory]], temp); // link produce with temporary object in specific category
 
-						// refresh products in html selects
+						// add new product to the specific category
+						Object.assign(produce[Object.keys(produce)[selCategory]], temp);
+
+						// refresh list in select
 						const selectProduct = document.getElementById('selectProduct');
-						selectProduct.innerHTML = '<option value="-1">Choose product</option>'; // refresh select
+						selectProduct.innerHTML = '<option value="-1">Choose product</option>'; // Refresh select
 						const category = produce[Object.keys(produce)[selCategory]];
 
-						// iterate each product
+						// Update select by products
 						for (let i = 0; i < Object.keys(category).length; i++) {
 							const option = document.createElement('option');
 							option.value = i;
@@ -277,17 +287,17 @@ const solving = () => {
 							selectProduct.appendChild(option);
 						}
 
+						// correct
 						resArea.value = 'Tika pievienots!';
 						resArea.style.color = 'greenyellow';
-						localStorage.setItem('object', JSON.stringify(produce)); // set new produce object for locale
+						localStorage.setItem('object', JSON.stringify(produce)); // save in localStorage
 					};
-					reader.readAsDataURL(file);
-				}
-				///////////////////////////////////////////////////////////////////
+					reader.readAsDataURL(file); // read the file as URL
+				} else {
+					// If data is not correct -> send error message
+					let errorMessage = 'Netika pievienots! Lūdzu ievadiet korektus datus:\n';
 
-				// if values are incorrect
-				else {
-					resArea.value = 'Netika pievienots!';
+					resArea.value = errorMessage;
 					resArea.style.color = 'red';
 				}
 			});
