@@ -168,6 +168,16 @@ button {
   transition: .3s linear;
 }
 
+.textarea_block img {
+  display: block;
+  max-height: 200px;
+  width: auto;
+  text-align: center;
+  margin-top: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .box .textarea_block .delete {
   position: absolute;
   z-index: 5;

@@ -23,9 +23,9 @@ const checking = (selCategory, selProduct) => {
 	let result = ['', true]; // valid result
 
 	// failed results
-	// if (selCategory == '0' && selProduct == '0') {
-	// 	result = ['Please select correct category or product.', false];
-	// }
+	if (selCategory == '-1') {
+		result = ['Please select a category.', false];
+	}
 
 	return result; // send checking result
 };
@@ -38,12 +38,14 @@ const produce = {
 			country: 'Spānija',
 			price: 8,
 			count: 86,
+			image: 'images/mandarini.jpg',
 		},
 		1: {
 			title: 'Mandarīni2',
 			country: 'Spānija',
 			price: 8,
 			count: 86,
+			image: 'images/mandarini.jpg',
 		},
 	},
 	Kauleņi: {
@@ -52,12 +54,14 @@ const produce = {
 			country: 'Latvija',
 			price: 3,
 			count: 65,
+			image: 'images/persiki.jpg',
 		},
 		1: {
 			title: 'Mango',
 			country: 'Brazilija',
 			price: 3,
 			count: 65,
+			image: 'images/mango.jpg',
 		},
 	},
 	'Sakņu darzeņi': {
@@ -66,12 +70,14 @@ const produce = {
 			country: 'Lietuva',
 			price: 2,
 			count: 244,
+			image: 'images/bietes.jpg',
 		},
 		1: {
 			title: 'Bietes2',
 			country: 'Lietuva',
 			price: 2,
 			count: 244,
+			image: 'images/bietes.jpg',
 		},
 	},
 	Ķirbis: {
@@ -80,12 +86,14 @@ const produce = {
 			country: 'Spain',
 			price: 3,
 			count: 99,
+			image: 'images/gurki.jpg',
 		},
 		1: {
 			title: 'Gurķi2',
 			country: 'Spain',
 			price: 3,
 			count: 99,
+			image: 'images/gurki.jpg',
 		},
 	},
 };
@@ -100,11 +108,28 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // solving function => solve defined task
-const solving = (selCategory, selProduct) => {
+const solving = () => {
+	const selCategory = document.getElementById('selectCategory').value;
+	const selProduct = document.getElementById('selectProduct').value;
+
+	const start = Date.now();
 	let result = 'Example...'; // initial result
 
 	// if category is not selected
 	if (selCategory == '-1') {
+		const imgElement = document.querySelector('.textarea_block img');
+		if (imgElement) {
+			imgElement.src = '#';
+			imgElement.setAttribute('alt', '');
+		}
+
+		// delete buttons if exists
+		const deleteBtn = document.querySelector('.delete');
+		if (deleteBtn) document.querySelector('.textarea_block').removeChild(deleteBtn);
+
+		const addBtn = document.querySelector('.add');
+		if (addBtn) document.querySelector('.textarea_block').removeChild(addBtn);
+
 		// print all categories
 		result = 'Produce categories:\n\n';
 		// iterate each category key
@@ -115,6 +140,15 @@ const solving = (selCategory, selProduct) => {
 
 		// if category is selected, but product is not
 	} else if (selCategory != '-1' && selProduct == '-1') {
+		const imgElement = document.querySelector('.textarea_block img');
+		if (imgElement) {
+			imgElement.src = '';
+			imgElement.setAttribute('alt', '');
+		}
+		// remove delete button if exists
+		const deleteBtn = document.querySelector('.delete');
+		if (deleteBtn) document.querySelector('.textarea_block').removeChild(deleteBtn);
+
 		result = `${JSON.stringify(Object.keys(produce)[selCategory])} products:\n\n`;
 		const categoryLength = Object.keys(produce[Object.keys(produce)[selCategory]]).length; // get selected produce category length
 
@@ -140,6 +174,8 @@ const solving = (selCategory, selProduct) => {
 		const btn = document.createElement('span');
 		btn.className = 'add';
 		btn.textContent = '+';
+
+		const existsAdd = document.querySelector('.add');
 
 		// clicking to the add btn
 		btn.addEventListener('click', () => {
@@ -187,6 +223,11 @@ const solving = (selCategory, selProduct) => {
 			input4.placeholder = 'ievadiet produkta cenu';
 			input4.type = 'number';
 
+			// product image
+			const inputFile = document.createElement('input');
+			inputFile.type = 'file';
+			inputFile.accept = 'image/*'; // only images
+
 			// block for correct position (textarea and input)
 			const btn_block = document.createElement('div');
 			btn_block.className = 'button_block';
@@ -204,36 +245,43 @@ const solving = (selCategory, selProduct) => {
 
 			// clicking to the btn add product with specific values
 			btn_add.addEventListener('click', () => {
+				const file = inputFile.files[0];
 				// if values are correct
-				if ((input1.value != '' && input2.value != '' && input3.value != 'e' && input3.value != '' && input4.value != 'e') || input4.value != '') {
-					// const def = produce[Object.keys(produce)[selCategory]];
-					const len = Object.keys(produce[Object.keys(produce)[selCategory]]).length;
-					// temporary object with product data
-					const temp = {
-						[len]: {
-							title: input1.value,
-							country: input2.value,
-							price: input3.value,
-							count: input4.value,
-						},
+				if ((input1.value != '' && input2.value != '' && input3.value != 'e' && input3.value != '' && input4.value != 'e' && file) || input4.value != '' || !isNaN(Number(input3.value)) || !isNaN(Number(input4.value)) || Number(input3.value) > 0 || Number(input4.value) > 0) {
+					const reader = new FileReader();
+					reader.onload = () => {
+						// const def = produce[Object.keys(produce)[selCategory]];
+						const len = Object.keys(produce[Object.keys(produce)[selCategory]]).length;
+						// temporary object with product data
+						const temp = {
+							[len]: {
+								title: input1.value,
+								country: input2.value,
+								price: input3.value,
+								count: input4.value,
+								image: reader.result,
+							},
+						};
+						Object.assign(produce[Object.keys(produce)[selCategory]], temp); // link produce with temporary object in specific category
+
+						// refresh products in html selects
+						const selectProduct = document.getElementById('selectProduct');
+						selectProduct.innerHTML = '<option value="-1">Choose product</option>'; // refresh select
+						const category = produce[Object.keys(produce)[selCategory]];
+
+						// iterate each product
+						for (let i = 0; i < Object.keys(category).length; i++) {
+							const option = document.createElement('option');
+							option.value = i;
+							option.textContent = category[i].title;
+							selectProduct.appendChild(option);
+						}
+
+						resArea.value = 'Tika pievienots!';
+						resArea.style.color = 'greenyellow';
+						localStorage.setItem('object', JSON.stringify(produce)); // set new produce object for locale
 					};
-					Object.assign(produce[Object.keys(produce)[selCategory]], temp); // link produce with temporary object in specific category
-
-					// refresh products in html selects
-					const selectProduct = document.getElementById('selectProduct');
-					selectProduct.innerHTML = '<option value="-1">Choose product</option>'; // refresh select
-					const category = produce[Object.keys(produce)[selCategory]];
-
-					// iterate each product
-					for (let i = 0; i < Object.keys(category).length; i++) {
-						const option = document.createElement('option');
-						option.value = i;
-						option.textContent = category[i].title;
-						selectProduct.appendChild(option);
-					}
-
-					resArea.value = 'Tika pievienots!';
-					resArea.style.color = 'greenyellow';
+					reader.readAsDataURL(file);
 				}
 				///////////////////////////////////////////////////////////////////
 
@@ -249,17 +297,24 @@ const solving = (selCategory, selProduct) => {
 			modal_container.appendChild(input2);
 			modal_container.appendChild(input3);
 			modal_container.appendChild(input4);
+			modal_container.appendChild(inputFile);
 			modal_container.appendChild(btn_block);
 
 			modal.appendChild(modal_container); // add modal container to the modal block
 			document.querySelector('.main').appendChild(modal); // add modal to the html
 		});
 
-		document.querySelector('.textarea_block').appendChild(btn);
+		if (!existsAdd) {
+			document.querySelector('.textarea_block').appendChild(btn);
+		}
 		///////////////////////////////////////////////////////////////////
 
 		// if category is selected with product
 	} else if (selCategory != '-1' && selProduct != '-1') {
+		// remove add button if exists
+		const addBtn = document.querySelector('.add');
+		if (addBtn) document.querySelector('.textarea_block').removeChild(addBtn);
+
 		const selectedProduct = produce[Object.keys(produce)[selCategory]][selProduct]; // get selected product
 		result = `Product details:\n\n`;
 		result += `Title: ${selectedProduct.title}\n`;
@@ -267,32 +322,67 @@ const solving = (selCategory, selProduct) => {
 		result += `Price: $${selectedProduct.price}\n`;
 		result += `Count: ${selectedProduct.count}`;
 
+		const imgElement = document.querySelector('.textarea_block img');
+		imgElement.src = selectedProduct.image || '';
+		imgElement.setAttribute('alt', 'Product');
+
 		const btn = document.createElement('span');
 		btn.className = 'delete';
 		btn.textContent = '-';
 
-		document.querySelector('.textarea_block').appendChild(btn);
+		const existsDelete = document.querySelector('.delete');
+
+		btn.addEventListener('click', () => {
+			delete produce[Object.keys(produce)[selCategory]][selProduct];
+			localStorage.setItem('object', JSON.stringify(produce));
+			refreshSelect();
+		});
+
+		if (!existsDelete) {
+			document.querySelector('.textarea_block').appendChild(btn);
+		}
 	}
 
-	localStorage.setItem('object', JSON.stringify(produce)); // set new produce object for locale
+	const millis = Date.now() - start;
+	console.log(`seconds elapsed = ${millis}`);
 
 	return result; // send solving result
 };
 
 const refreshSelect = () => {
-	const selectProduct = document.getElementById('selectProduct'); // get select
-	selectProduct.value = '-1'; // refresh select
-	selectProduct.innerHTML = '<option value="-1">Choose product</option>'; // set default option
+	const selectProduct = document.getElementById('selectProduct');
+	const selCategory = document.getElementById('selectCategory').value;
+	selectProduct.innerHTML = '<option value="-1">Choose product</option>';
+	const category = produce[Object.keys(produce)[selCategory]];
+	for (let i = 0; i < category.length; i++) {
+		const option = document.createElement('option');
+		option.value = i;
+		option.textContent = category[i].title;
+		selectProduct.appendChild(option);
+	}
 };
 
 // on change category refresh products select
-document.getElementById('selectCategory').addEventListener('change', refreshSelect());
+document.getElementById('selectCategory').addEventListener('change', refreshSelect);
 
 // refresh all data
 const refresh = () => {
 	document.getElementById('selectCategory').value = '-1'; // category select value
 	document.getElementById('selectProduct').value = '-1'; // product select value
 	document.getElementById('resultArea').innerHTML = '...'; // textarea
+
+	const imgElement = document.querySelector('.textarea_block img');
+	if (imgElement) {
+		imgElement.src = '#';
+		imgElement.setAttribute('alt', '');
+	}
+
+	// delete buttons if exists
+	const deleteBtn = document.querySelector('.delete');
+	if (deleteBtn) document.querySelector('.textarea_block').removeChild(deleteBtn);
+
+	const addBtn = document.querySelector('.add');
+	if (addBtn) document.querySelector('.textarea_block').removeChild(addBtn);
 
 	refreshSelect();
 };
