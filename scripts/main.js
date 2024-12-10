@@ -32,70 +32,70 @@ const checking = (selCategory, selProduct) => {
 
 // produce object (fruits and vegetables)
 const produce = {
-	Citrus: {
-		0: {
+	'Citrus': [
+		{
 			title: 'Mandarīni',
 			country: 'Spānija',
 			price: 8,
 			count: 86,
 			image: 'images/mandarini.jpg',
 		},
-		1: {
+		{
 			title: 'Mandarīni2',
 			country: 'Spānija',
 			price: 8,
 			count: 86,
 			image: 'images/mandarini.jpg',
 		},
-	},
-	Kauleņi: {
-		0: {
+	],
+	'Kauleņi': [
+		{
 			title: 'Persiki',
 			country: 'Latvija',
 			price: 3,
 			count: 65,
 			image: 'images/persiki.jpg',
 		},
-		1: {
-			title: 'Mango'
+		{
+			title: 'Mango',
 			country: 'Brazilija',
 			price: 3,
 			count: 65,
 			image: 'images/mango.jpg',
 		},
-	},
-	'Sakņu darzeņi': {
-		0: {
+	],
+	'Sakņu darzeņi': [
+		{
 			title: 'Bietes',
 			country: 'Lietuva',
 			price: 2,
 			count: 244,
 			image: 'images/bietes.jpg',
 		},
-		1: {
+		{
 			title: 'Bietes2',
 			country: 'Lietuva',
 			price: 2,
 			count: 244,
 			image: 'images/bietes.jpg',
 		},
-	},
-	Ķirbis: {
-		0: {
+	],
+	'Ķirbis': [
+		{
 			title: 'Gurķi',
 			country: 'Spain',
 			price: 3,
 			count: 99,
 			image: 'images/gurki.jpg',
 		},
-		1: {
+		{
 			title: 'Gurķi2',
 			country: 'Spain',
 			price: 3,
 			count: 99,
 			image: 'images/gurki.jpg',
 		},
-	},
+	],
 };
 
 // on page loading add locale data
@@ -261,18 +261,16 @@ const solving = () => {
 						const len = Object.keys(produce[Object.keys(produce)[selCategory]]).length;
 
 						// temporary object with product data
-						const temp = {
-							[len]: {
-								title: input1.value.trim(),
-								country: input2.value.trim(),
-								price: Number(input4.value),
-								count: Number(input3.value),
-								image: reader.result,
-							},
+						const newProduct = {
+							title: input1.value.trim(),
+							country: input2.value.trim(),
+							price: Number(input4.value),
+							count: Number(input3.value),
+							image: reader.result,
 						};
 
 						// add new product to the specific category
-						Object.assign(produce[Object.keys(produce)[selCategory]], temp);
+						produce[Object.keys(produce)[selCategory]].push(newProduct);
 
 						// refresh list in select
 						const selectProduct = document.getElementById('selectProduct');
@@ -325,7 +323,8 @@ const solving = () => {
 		const addBtn = document.querySelector('.add');
 		if (addBtn) document.querySelector('.textarea_block').removeChild(addBtn);
 
-		const selectedProduct = produce[Object.keys(produce)[selCategory]][selProduct]; // get selected product
+		const selectedCategory = produce[Object.keys(produce)[selCategory]]; // specific category
+		const selectedProduct = selectedCategory[selProduct]; // get selected product
 		result = `Product details:\n\n`;
 		result += `Title: ${selectedProduct.title}\n`;
 		result += `Country: ${selectedProduct.country}\n`;
@@ -343,7 +342,7 @@ const solving = () => {
 		const existsDelete = document.querySelector('.delete');
 
 		btn.addEventListener('click', () => {
-			delete produce[Object.keys(produce)[selCategory]][selProduct];
+			selectedCategory.splice(selProduct, 1);
 			localStorage.setItem('object', JSON.stringify(produce));
 			refreshSelect();
 		});
