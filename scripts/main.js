@@ -24,6 +24,13 @@ const checking = (selCategory, selProduct) => {
 
 	// failed results
 	if (selCategory == '-1') {
+		// delete buttons if exists
+		const deleteBtn = document.querySelector('.delete');
+		if (deleteBtn) document.querySelector('.textarea_block').removeChild(deleteBtn);
+
+		const addBtn = document.querySelector('.add');
+		if (addBtn) document.querySelector('.textarea_block').removeChild(addBtn);
+
 		result = ['Please select a category.', false];
 	}
 
@@ -32,7 +39,7 @@ const checking = (selCategory, selProduct) => {
 
 // produce object (fruits and vegetables)
 const produce = {
-	'Citrus': [
+	Citrus: [
 		{
 			title: 'Mandarīni',
 			country: 'Spānija',
@@ -48,7 +55,7 @@ const produce = {
 			image: 'images/mandarini.jpg',
 		},
 	],
-	'Kauleņi': [
+	Kauleņi: [
 		{
 			title: 'Persiki',
 			country: 'Latvija',
@@ -80,7 +87,7 @@ const produce = {
 			image: 'images/bietes.jpg',
 		},
 	],
-	'Ķirbis': [
+	Ķirbis: [
 		{
 			title: 'Gurķi',
 			country: 'Spain',
@@ -122,13 +129,6 @@ const solving = () => {
 			imgElement.src = '#';
 			imgElement.setAttribute('alt', '');
 		}
-
-		// delete buttons if exists
-		const deleteBtn = document.querySelector('.delete');
-		if (deleteBtn) document.querySelector('.textarea_block').removeChild(deleteBtn);
-
-		const addBtn = document.querySelector('.add');
-		if (addBtn) document.querySelector('.textarea_block').removeChild(addBtn);
 
 		// print all categories
 		result = 'Produce categories:\n\n';
