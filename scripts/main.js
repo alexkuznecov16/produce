@@ -57,7 +57,7 @@ const produce = {
 			image: 'images/persiki.jpg',
 		},
 		1: {
-			title: 'Mango',
+			title: 'Mango'
 			country: 'Brazilija',
 			price: 3,
 			count: 65,
